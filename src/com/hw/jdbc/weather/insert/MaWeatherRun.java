@@ -1,44 +1,49 @@
-package com.hw.weather.select;
+package com.hw.jdbc.weather.insert;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
-public class KmaMs {
+public class MaWeatherRun {
 
 	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		StringBuilder sb = new StringBuilder();
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet result = null;
-		String sql = "SELECT * FROM KMA_MS";
+		String sql = "";
+		int result = 0;
+		
+		System.out.print("기상청에게 제공할 날씨종류의 번호를 입력해주세요 >");
+		String weatherNo = sc.nextLine();
+		System.out.print("날씨정보를 제공받을 기상청의 번호를 입력해주세요 >");
+		String kmaNo = sc.nextLine();
+		
+		sb.append("INSERT INTO MA_WEATHER VALUES('");
+		sb.append(weatherNo);
+		sb.append("', '");
+		sb.append(kmaNo);
+		sb.append("')");
+		
+		sql = sb.toString();
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:XE", "C##SJ", "SJ");
+			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
-			result = stmt.executeQuery(sql);
-			
-			while(result.next()) {
-				int kmaMsNo = result.getInt("KMA_MS_NO");
-				int kmaNo = result.getInt("KMA_NO");
-				int msNo2 = result.getInt("MS_NO2");
-				
-				System.out.println("기상청과 위성의 번호 : " + kmaMsNo + ", \t기상청 번호 : " + kmaNo + ",\t위성 번호 : " + msNo2);
+			result = stmt.executeUpdate(sql);
+			if(result > 0) {
+				conn.commit();
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				if(result != null && !result.isClosed()) {
-					result.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			sc.close();
 			try {
 				if(stmt != null && !stmt.isClosed()) {
 					stmt.close();

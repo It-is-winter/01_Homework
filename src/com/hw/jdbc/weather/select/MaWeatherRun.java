@@ -1,4 +1,4 @@
-package com.hw.weather.select;
+package com.hw.jdbc.weather.select;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
