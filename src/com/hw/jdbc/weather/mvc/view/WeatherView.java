@@ -41,9 +41,9 @@ public class WeatherView {
 			
 			switch(menu) {
 			case 1 : userMenu(); break;
-//			case 2 : createWeather(); break;
-//			case 3 : updateWeather(); break;
-//			case 4 : deleteWeather(); break;
+			case 2 : createWeather(); break;
+			case 3 : updateWeather(); break;
+			case 4 : deleteWeather(); break;
 			case 5 : return;
 			default : System.out.println("없는 메뉴입니다. 다시 입력해주세요"); break;
 			}
@@ -138,7 +138,7 @@ public class WeatherView {
 		System.out.println("-------------------------------------------------------");
 	}
 	
-/*	private void createWeather() {
+	private void createWeather() {
 		int wId = 0;
 		int mId = 0;
 		String weatherName = "";
@@ -223,8 +223,8 @@ public class WeatherView {
 			}
 		}
 		
-		WeatherDto weather = new WeatherDto(weatherName, temp, msId);
-		result = weatherController.updateWeather(id, weather);
+		WeatherDto weather = new WeatherDto(id, weatherName, temp, msId);
+		result = weatherController.updateWeather(weather);
 		System.out.println();
 		if(result != 0) {
 			System.out.println(id + "번 날씨 수정완료되었습니다.");
@@ -264,5 +264,5 @@ public class WeatherView {
 			System.out.println(id + "번 날씨 삭제 실패하였습니다.");			
 		}
 	}
-*/
+
 }

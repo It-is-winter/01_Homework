@@ -23,40 +23,34 @@ public class WeatherService {
 	/*
 	 * Create a new weather information
 	 */
-/*	public int createWeather(WeatherDto weatherDto) {
+	public int createWeather(WeatherDto weatherDto) {
 		String weatherName = weatherDto.getWeatherName();
+		int result = 0;
 		if(weatherDto != null) {
-			if(validateName(weatherName)) {
-				weathers.add(new Weather(weatherDto.getWeatherId(), weatherName, weatherDto.getTemperature(), weatherDto.getMsId()));
-				return 1;
+			if((weatherName != null) && validateName(weatherName)) {
+				result = weatherDao.createWeather(weatherDto);
 			}
 		}
-		return 0;
-	}*/
+		return result;
+	}
 	/*
 	 * Update weather information
 	 */
-/*	public int updateWeather(int weatherId, WeatherDto weatherDto) {
-		int index = indexOf(weatherId);
+	public int updateWeather(WeatherDto weatherDto) {
 		String weatherName = weatherDto.getWeatherName();
-		if(index != -1) { // weather found
-			if(validateName(weatherName)) {
-				weathers.set(index, new Weather(weatherId, weatherName, weatherDto.getTemperature(), weatherDto.getMsId()));
-				return 1;
+		int result = 0;
+		if(weatherDto != null) { // weather found
+			if((weatherName != null) && validateName(weatherName)) {
+				result = weatherDao.updateWeather(weatherDto);
 			}
 		}
-		return 0;
-	}*/
+		return result;
+	}
 	/*
 	 * Delete weather information
 	 */
-/*	public int deleteWeather(int weatherId) {
-		int index = indexOf(weatherId);
-		if(index != -1) { // weather found
-			weathers.remove(index);
-			return 1;
-		}
-		return 0;
+	public int deleteWeather(int weatherId) {
+		return weatherDao.deleteWeather(weatherId);
 	}
 	
 	private boolean validateName(String weatherName) {
@@ -65,5 +59,5 @@ public class WeatherService {
 		}
 		return false;
 	}
-*/
+
 }

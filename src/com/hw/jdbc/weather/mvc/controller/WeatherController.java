@@ -17,16 +17,16 @@ public class WeatherController {
 		return weatherService.findById(weatherId);
 	}
 	
-/*	public int createWeather(WeatherDto weatherDto) {
+	public int createWeather(WeatherDto weatherDto) {
 		return weatherService.createWeather(weatherDto);
 	}
 	
-	public int updateWeather(int weatherId, WeatherDto weatherDto) {
-		return weatherService.updateWeather(weatherId, weatherDto);
+	public int updateWeather(WeatherDto weatherDto) {
+		return weatherService.updateWeather(weatherDto);
 	}
 	
 	public int deleteWeather(int weatherId) {
 		return weatherService.deleteWeather(weatherId);
 	}
-*/
+
 }
