@@ -95,7 +95,7 @@ public class WeatherDao {
 				   + 	"SET "
 				   + 		"WEATHER_CONDITION = '" + weatherDto.getWeatherName() + "', "
 				   + 		"TEMPERATURE = '" + weatherDto.getTemperature() + "', "
-				   + 		"MS_ID = " + weatherDto.getMsId()
+				   + 		"MS_NO = " + weatherDto.getMsId()
 				   +  "WHERE "
 				   + 		"WEATHER_ID = " + weatherDto.getWeatherId();
 		return withConnection(sql);
@@ -107,7 +107,7 @@ public class WeatherDao {
 						  FROM 
 						       WEATHER
 						 WHERE 
-						       WEATHER_ID = 
+						       WEATHER_NO = 
 					 """;
 		sql += weatherId;
 		return withConnection(sql);
