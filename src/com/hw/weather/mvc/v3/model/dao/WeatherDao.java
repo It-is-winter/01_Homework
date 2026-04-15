@@ -54,16 +54,18 @@ public class WeatherDao {
 						 WHERE 
 						       WEATHER_NO = ?
 					 """;
-		sql += weatherId;
-		try(PreparedStatement pstmt = conn.prepareStatement(sql);
-			ResultSet rset = pstmt.executeQuery()) {
+		try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, weatherId);
-			if(rset.next()) {
-				int weatherNo = rset.getInt("WEATHER_NO");
-				String weatherName = rset.getString("WEATHER_CONDITION");
-				String temperature = rset.getString("TEMPERATURE");
-				long msNo = rset.getLong("MS_NO");
-				weather = new Weather(weatherNo, weatherName, temperature, msNo);
+			try(ResultSet rset = pstmt.executeQuery()) {
+				if(rset.next()) {
+					int weatherNo = rset.getInt("WEATHER_NO");
+					String weatherName = rset.getString("WEATHER_CONDITION");
+					String temperature = rset.getString("TEMPERATURE");
+					long msNo = rset.getLong("MS_NO");
+					weather = new Weather(weatherNo, weatherName, temperature, msNo);
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -124,25 +126,6 @@ public class WeatherDao {
 		int result = 0;
 		String sql = """
 						DELETE 
-						  FROM 
-						       WEATHER
-						 WHERE 
-						       WEATHER_NO = ?
-					 """;
-		try(PreparedStatement pstmt = conn.prepareStatement(sql);) {
-			pstmt.setInt(1, weatherId);
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public int checkId(Connection conn, int weatherId) {
-		int result = 0;
-		String sql = """
-						SELECT 
-							   WEATHER_NO
 						  FROM 
 						       WEATHER
 						 WHERE 

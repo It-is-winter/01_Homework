@@ -1,11 +1,11 @@
 package com.hw.weather.mvc.v3.model.service;
 
 import java.sql.Connection;
+
 import java.util.List;
 
 import static com.hw.weather.mvc.v3.common.JdbcTemplate.*;
 
-import com.hw.weather.mvc.v3.exception.DuplicateWeatherNoException;
 import com.hw.weather.mvc.v3.exception.WeatherConditionLengthOutOfBoundsException;
 import com.hw.weather.mvc.v3.model.dao.WeatherDao;
 import com.hw.weather.mvc.v3.model.dto.WeatherDto;
@@ -33,11 +33,8 @@ public class WeatherService {
 	 */
 	public int createWeather(WeatherDto weatherDto) {
 		if(weatherDto != null) {
-			if(checkId(weatherDto.getWeatherId())) {
-				throw new DuplicateWeatherNoException();
-			}
 			String weatherName = weatherDto.getWeatherName();
-			if((weatherName != null) && validateName(weatherName)) {
+			if(validateName(weatherName)) {
 				throw new WeatherConditionLengthOutOfBoundsException();
 			}
 		}
@@ -55,7 +52,7 @@ public class WeatherService {
 	public int updateWeather(WeatherDto weatherDto) {
 		if(weatherDto != null) {
 			String weatherName = weatherDto.getWeatherName();
-			if((weatherName != null) && validateName(weatherName)) {
+			if(validateName(weatherName)) {
 				throw new WeatherConditionLengthOutOfBoundsException();
 			}
 		}
@@ -73,9 +70,6 @@ public class WeatherService {
 	public int deleteWeather(int weatherId) {
 		Connection conn = getConnection();
 		int result = 0;
-		if(checkId(weatherId)) {
-			throw new DuplicateWeatherNoException();
-		}
 		result = weatherDao.deleteWeather(conn, weatherId);
 		if(result > 0) {
 			commit(conn);
@@ -86,14 +80,6 @@ public class WeatherService {
 	
 	private boolean validateName(String weatherName) {
 		if(0 > weatherName.length() && weatherName.length() > 20) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean checkId(int weatherId) {
-		Connection conn = getConnection();
-		if(weatherDao.checkId(conn, weatherId) > 0) {
 			return true;
 		}
 		return false;

@@ -1,11 +1,11 @@
 package com.hw.weather.mvc.v3.view;
 
 import java.util.InputMismatchException;
-
 import java.util.List;
 import java.util.Scanner;
 
 import com.hw.weather.mvc.v3.controller.WeatherController;
+import com.hw.weather.mvc.v3.exception.WeatherConditionLengthOutOfBoundsException;
 import com.hw.weather.mvc.v3.model.dto.WeatherDto;
 import com.hw.weather.mvc.v3.model.vo.Weather;
 
@@ -140,28 +140,34 @@ public class WeatherView {
 	}
 	
 	private void createWeather() {
-		int mId = 0;
 		String weatherName = "";
-		String temp = "";
-		System.out.print("추가하실 날씨의 종류를 입력해주세요. >");
-		weatherName = sc.nextLine();
-		System.out.print("추가하실 날씨의 기온을 입력해주세요. >");
-		temp = sc.nextLine();
 		while(true) {
-		System.out.print("추가하실 날씨의 정보를 제공받은 위성의 번호를 입력해주세요. >");
-		String msId = sc.nextLine();
-			try {
-				mId = Integer.parseInt(msId);
-				break;
-			} catch(NumberFormatException e) {
-				System.out.println("숫자로 입력해주세요.");
-				System.out.println();
+			System.out.print("추가하실 날씨의 종류를 입력해주세요. >");
+			weatherName = sc.nextLine();
+			System.out.print("추가하실 날씨의 기온을 입력해주세요. >");
+			String temp = sc.nextLine();
+			int mId = 0;	
+			while(true) {
+				System.out.print("추가하실 날씨의 정보를 제공받은 위성의 번호를 입력해주세요. >");
+				String msId = sc.nextLine();
+				try {
+					mId = Integer.parseInt(msId);
+					break;
+				} catch(NumberFormatException e) {
+					System.out.println("숫자로 입력해주세요.");
+					System.out.println();
+				}
 			}
+			
+			WeatherDto weather = new WeatherDto(weatherName, temp, mId);
+			try {
+				result = weatherController.createWeather(weather);
+				break;
+			} catch(WeatherConditionLengthOutOfBoundsException e) {
+				System.out.println("날씨 종류의 이름이 너무 짧거나 깁니다. 다시 작성해주세요.");
+			}
+			System.out.println();
 		}
-		
-		WeatherDto weather = new WeatherDto(weatherName, temp, mId);
-		result = weatherController.createWeather(weather);
-		System.out.println();
 		if(result != 0) {
 			System.out.println(weatherName + " 날씨가 추가되었습니다.");
 		} else {
