@@ -79,7 +79,7 @@ public class WeatherService {
 	}
 	
 	private boolean validateName(String weatherName) {
-		if(0 > weatherName.length() && weatherName.length() > 20) {
+		if(0 > weatherName.length() || weatherName.length() > 20) {
 			return true;
 		}
 		return false;
